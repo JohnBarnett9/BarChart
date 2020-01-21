@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+		<meta content="utf-8" http-equiv="encoding">
+		<title>Bar Chart</title>
+		<script src="../d3.min.js"></script>
+		<style>
+			
+		</style>
+	</head>
+	<body>
+		<h1>Bar Chart</h1>
+		<div id="root"></div>
+		<script>
+			d3.json("GDP-data.json")
+			.then(function(dataset){
+				console.dir(dataset.data); //only the GDP array
+				
+				const width = 5000;
+				const height = 7000;
+
+				const svg = d3.select("#root")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height);
+				
+				svg.selectAll("rect")
+				.data(dataset.data)
+				.enter()
+				.append("rect")
+				.attr("x", (d, i) => { return i * 30; }) //x axis location of column, * 30 for space between each column
+				.attr("y", (d, i) => { return height - d[1]; }) //0 inverts chart, height - amount chart is correct direction
+				.attr("width", 25)
+				.attr("height", (d, i) => { console.log(d[1]); return d[1]; });
+				
+
+			});
+
+		</script>
+	</body>
+</html> 
+
+
