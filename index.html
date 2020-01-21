@@ -6,33 +6,106 @@
 		<title>Bar Chart</title>
 		<script src="../d3.min.js"></script>
 		<style>
-			
 		</style>
 	</head>
 	<body>
-		<h1>Bar Chart</h1>
 		<div id="root"></div>
 		<script>
 			d3.json("GDP-data.json")
 			.then(function(dataset){
 				console.dir(dataset.data); //only the GDP array
 				
-				const width = 5000;
-				const height = 7000;
+				const width = 1000;
+				const height = 500;
+
+				const padding = 60;
+
+				var minYear = d3.min(dataset.data, (d) => d[0].substring(0,4));
+				minYear = parseInt(minYear) - 1;
+				console.dir(minYear);
+
+				var maxYear = d3.max(dataset.data, (d) => d[0].substring(0,4));
+				maxYear = parseInt(maxYear) + 1;
+				console.dir(maxYear);
+
+				const xScale = d3.scaleTime()
+				.domain([minYear, maxYear])
+				.range([padding, width - padding]);
+
+				const yScale = d3.scaleLinear()
+				.domain([d3.min(dataset.data, (d) => d[1]), d3.max(dataset.data, (d) => d[1])])
+				.range([height / 2, 0]);
+
+
+
 
 				const svg = d3.select("#root")
 				.append("svg")
 				.attr("width", width)
-				.attr("height", height);
-				
+				.attr("height", height)
+				.attr("style", "background-color: lightgrey;");
+
+				svg.append("text")
+				.attr("x", width / 2)
+				.attr("y", 100)
+				.text("United States GDP")
+				.attr("id", "title");
+
+				//format("d") means no ',' decimal in number
+				//https://stackoverflow.com/questions/16549868/d3-remove-comma-delimiters-for-thousands
+				var xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
+				//var xAxis = d3.axisBottom(xScale);
+
+				//x axis
+				svg.append("g")
+				.attr("transform", "translate(0," + (height - padding) + ")")
+				.call(xAxis);
+
+				var yAxis = d3.axisLeft(yScale);
+
+				svg.append("g")
+				.attr("transform", "translate(50, 10)")
+				.call(yAxis);
+
+
+				//x axis location of column, 30 for space between each column
+				//-100 to make axis below bars
 				svg.selectAll("rect")
 				.data(dataset.data)
 				.enter()
 				.append("rect")
-				.attr("x", (d, i) => { return i * 30; }) //x axis location of column, * 30 for space between each column
+				.attr("x", (d, i) => { return (i * 5) + 100; })
+				.attr("y", (d, i) => { return height - d[1] - 100; }) //0 inverts chart, height - amount chart is correct direction
+				.attr("width", 5)
+				.attr("height", (d, i) => { return d[1]; })
+				.attr("fill", "lightblue")
+				.attr("stroke", "black")
+      .style("stroke-width", .1);
+
+
+				/*
+				var bar = svg.selectAll("g")
+				.data(dataset.data)
+				.enter()
+				.append("g")
+
+				.attr("transform", "translate(0," + height + ")")
+				.call(xAxis); //did not work, Unexpected value translate(NaN,0) parsing transform attribute.
+				*/
+
+
+				
+				/*
+				black rectangles
+				svg.selectAll("rect")
+				.data(dataset.data)
+				.enter()
+				.append("rect")
+				.attr("x", (d, i) => { return i * 5; }) //x axis location of column, * 30 for space between each column
 				.attr("y", (d, i) => { return height - d[1]; }) //0 inverts chart, height - amount chart is correct direction
-				.attr("width", 25)
-				.attr("height", (d, i) => { console.log(d[1]); return d[1]; });
+				.attr("width", 5)
+				.attr("height", (d, i) => { return d[1]; });
+				*/
 				
 
 			});
