@@ -67,17 +67,12 @@
 				.attr("transform", "translate(50, 10)")
 				.call(yAxis);
 
-
-				//x axis location of column, 30 for space between each column
-				//-100 to make axis below bars
-				//0 inverts chart, height - amount chart is correct direction
 				svg.selectAll("rect")
 				.data(dataset.data)
 				.enter()
 				.append("rect")
 				.attr("x", (d, i) => { return (i * 3.23) + 53; })
-				//.attr("y", (d, i) => { return height - d[1] - 60; }) 
-				.attr("y", (d, i) => { return height - ((d[1] / 18000) * 430) - 60; }) 
+				.attr("y", (d, i) => { return height - ((d[1] / 18000) * 430) - 60; })
 				.attr("width", 3)
 				.attr("height", (d, i) => { return (d[1] / 18000) * 430; })
 				.attr("fill", "blue")
