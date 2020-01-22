@@ -6,7 +6,36 @@
 		<title>Bar Chart</title>
 		<script src="../d3.min.js"></script>
 		<style>
-		</style>
+			#myTooltip {
+				position: absolute;
+				text-align: left;
+				width: 80px;
+				height: auto;
+				min-height: 20px;
+				padding: 2px;
+				font: 12px sans-serif;
+				background-color: rgb(255, 255, 255);
+				border: 2px solid rgb(100, 161, 209);
+				color: #5E99BD;
+				border-radius: 8px 8px 8px 8px;
+				pointer-events: none;
+				padding: 11px;
+			}
+
+			#myTooltip:before {
+				box-sizing: border-box;
+				display: inline;
+				font-size: 18px;
+				width: 100%;
+				line-height: 1;
+				color: rgb(100, 161, 209);
+				content: "\25BC";
+				position: absolute;
+				text-align: center;
+				top: 100%;
+				left: -2px;
+			}
+	</style>
 	</head>
 	<body>
 		<div id="root"></div>
@@ -77,8 +106,38 @@
 				.attr("height", (d, i) => { return (d[1] / 18000) * 430; })
 				.attr("fill", "blue")
 				.attr("stroke", "white")
-      			.style("stroke-width", .1);
-				
+				.style("stroke-width", .1)
+				.on("mouseover", function(d){
+					var tooltipDiv = d3.select("#myTooltip");
+					tooltipDiv.transition()
+					.duration(1)
+					.style("opacity", 1);
+
+					var tooltipData = "Date: " + d[0]
+					+ "GDP: " + d[1];
+					tooltipDiv.html(tooltipData)
+					.style("left", "100px")
+					.style("cursor", "pointer")
+					.style("top", function(dt){
+						console.log("d=");
+						console.dir(d);
+						console.log("dt=");
+						console.dir(dt);
+						return "100px";
+					});
+				})
+				.on("mouseout", function(d){
+					var tooltipDiv = d3.select("#myTooltip");
+					tooltipDiv.transition()
+					.duration(1)
+					.style("opacity", 0);
+				});
+
+				//tooltip on hover over rect
+				var toolTipDiv = d3.select("body")
+				.append("div")
+				.attr("id", "myTooltip")
+				.style("opacity", 0);
 
 			});
 
