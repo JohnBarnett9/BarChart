@@ -30,11 +30,14 @@
 
 				const xScale = d3.scaleTime()
 				.domain([minYear, maxYear])
-				.range([padding, width - padding]);
+				//.range([padding, width - padding]);
+				.range([50, width - padding]);
 
 				const yScale = d3.scaleLinear()
-				.domain([d3.min(dataset.data, (d) => d[1]), d3.max(dataset.data, (d) => d[1])])
-				.range([height / 2, 0]);
+				//.domain([d3.min(dataset.data, (d) => d[1]), d3.max(dataset.data, (d) => d[1])])
+				.domain([0, d3.max(dataset.data, (d) => d[1])])
+				//.range([height - 100, 0]);
+				.range([430, 0]);
 
 
 
@@ -51,10 +54,7 @@
 				.text("United States GDP")
 				.attr("id", "title");
 
-				//format("d") means no ',' decimal in number
-				//https://stackoverflow.com/questions/16549868/d3-remove-comma-delimiters-for-thousands
 				var xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
-				//var xAxis = d3.axisBottom(xScale);
 
 				//x axis
 				svg.append("g")
@@ -70,17 +70,19 @@
 
 				//x axis location of column, 30 for space between each column
 				//-100 to make axis below bars
+				//0 inverts chart, height - amount chart is correct direction
 				svg.selectAll("rect")
 				.data(dataset.data)
 				.enter()
 				.append("rect")
-				.attr("x", (d, i) => { return (i * 5) + 100; })
-				.attr("y", (d, i) => { return height - d[1] - 100; }) //0 inverts chart, height - amount chart is correct direction
-				.attr("width", 5)
-				.attr("height", (d, i) => { return d[1]; })
-				.attr("fill", "lightblue")
-				.attr("stroke", "black")
-      .style("stroke-width", .1);
+				.attr("x", (d, i) => { return (i * 3.23) + 53; })
+				//.attr("y", (d, i) => { return height - d[1] - 60; }) 
+				.attr("y", (d, i) => { return height - ((d[1] / 18000) * 430) - 60; }) 
+				.attr("width", 3)
+				.attr("height", (d, i) => { return (d[1] / 18000) * 430; })
+				.attr("fill", "blue")
+				.attr("stroke", "white")
+      			.style("stroke-width", .1);
 
 
 				/*
