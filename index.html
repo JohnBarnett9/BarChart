@@ -78,31 +78,6 @@
 				.attr("fill", "blue")
 				.attr("stroke", "white")
       			.style("stroke-width", .1);
-
-
-				/*
-				var bar = svg.selectAll("g")
-				.data(dataset.data)
-				.enter()
-				.append("g")
-
-				.attr("transform", "translate(0," + height + ")")
-				.call(xAxis); //did not work, Unexpected value translate(NaN,0) parsing transform attribute.
-				*/
-
-
-				
-				/*
-				black rectangles
-				svg.selectAll("rect")
-				.data(dataset.data)
-				.enter()
-				.append("rect")
-				.attr("x", (d, i) => { return i * 5; }) //x axis location of column, * 30 for space between each column
-				.attr("y", (d, i) => { return height - d[1]; }) //0 inverts chart, height - amount chart is correct direction
-				.attr("width", 5)
-				.attr("height", (d, i) => { return d[1]; });
-				*/
 				
 
 			});
