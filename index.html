@@ -70,10 +70,9 @@
 				.range([50, width - padding]);
 
 				const yScale = d3.scaleLinear()
-				//.domain([d3.min(dataset.data, (d) => d[1]), d3.max(dataset.data, (d) => d[1])])
 				.domain([0, d3.max(dataset.data, (d) => d[1])])
-				//.range([height - 100, 0]);
-				.range([430, 0]);
+				//.range([430, 0]);
+				.range([height - padding, padding]);
 
 
 
@@ -85,10 +84,13 @@
 				.attr("style", "background-color: lightgrey;");
 
 				svg.append("text")
-				.attr("x", width / 2)
-				.attr("y", 100)
+				.attr("x", (width / 2) - 150)
+				.attr("y", 50)
 				.text("United States GDP")
-				.attr("id", "title");
+				.attr("id", "title")
+				.attr("font-size", "30px")
+				.attr("font-weight", "bold");
+
 
 				var xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
 
@@ -100,7 +102,7 @@
 				var yAxis = d3.axisLeft(yScale);
 
 				svg.append("g")
-				.attr("transform", "translate(50, 10)")
+				.attr("transform", "translate(50, 0)")
 				.call(yAxis);
 
 				svg.selectAll("rect")
@@ -115,9 +117,19 @@
 					var scaledValue = xScale((i * xWidthFactor) + parseInt(minYear));
 					return scaledValue;
 				})
-				.attr("y", (d, i) => { return height - ((d[1] / 18000) * 430) - 60; })
+				//.attr("y", (d, i) => { return height - ((d[1] / 18000) * 430) - 60; })
+				.attr("y", (d, i) => {
+
+					//return height - ((d[1] / 18000) * 430) - 60; 
+					return yScale(d[1]); 
+				})
 				.attr("width", 3)
-				.attr("height", (d, i) => { return (d[1] / 18000) * 430; })
+				//.attr("height", (d, i) => { return (d[1] / 18000) * 430; })
+				.attr("height", (d, i) => {
+
+					//return (d[1] / 18000) * 430; 
+					return (height - padding - yScale(d[1]));
+				})
 				.attr("fill", "blue")
 				.attr("stroke", "white")
 				.style("stroke-width", .1)
