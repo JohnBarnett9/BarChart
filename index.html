@@ -48,7 +48,7 @@
 				const width = 1000;
 				const height = 500;
 
-				const padding = 60;
+				const padding = 90;
 
 				var minYear = d3.min(dataset.data, (d) => d[0].substring(0,4));
 				minYear = parseInt(minYear) - 1;
@@ -159,6 +159,23 @@
 				.append("div")
 				.attr("id", "myTooltip")
 				.style("opacity", 0);
+
+				//X Axis Label
+				svg.append("text")
+				.attr("text-anchor", "end")
+				.attr("x", width / 2)
+				.attr("y", height - 20)
+				.text("Year");
+
+				//Y Axis Label
+				svg.append("text")
+				.attr("y", padding - 30)
+				.attr("x", 0 - (height / 2))
+				.attr("dy", "1em")
+				.attr("transform", "rotate(-90)")
+				.style("text-anchor", "middle")
+				.text("GDP");
+
 
 			});
 
