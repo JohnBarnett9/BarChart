@@ -41,49 +41,43 @@
 	<body>
 		<div id="root"></div>
 		<script>
-			d3.json("GDP-data.json")
-			.then(function(dataset){
-				console.dir(dataset.data); //only the GDP array
-				
+			d3.json("GDP-data.json").then(function(dataset){
+				//dimensions of svg canvas
 				const width = 1000;
 				const height = 500;
 
+				//used to calculate range() and position of Y Axis Label
 				const padding = 90;
 
+				//-1 and +1 extra spaces on both sides of dataset
+				//convert "yyyy-mm-dd" to int yyyy
 				var minYear = d3.min(dataset.data, (d) => d[0].substring(0,4));
 				minYear = parseInt(minYear) - 1;
-				//console.dir(minYear);
 
 				var maxYear = d3.max(dataset.data, (d) => d[0].substring(0,4));
 				maxYear = parseInt(maxYear) + 1;
-				//console.dir(maxYear);
-
-
 				
+				//calculate width of every rect
 				const xWidthFactor = parseFloat(maxYear - minYear) / dataset.data.length;
-				//console.dir(maxYear);
-				//console.dir(minYear);
-				//console.dir(xWidthFactor); //0.2545
 
+				//scale x data to fit on chart
 				const xScale = d3.scaleTime()
 				.domain([minYear, maxYear])
-				//.range([padding, width - padding]);
 				.range([50, width - padding]);
 
+				//scale y data to fit on chart
 				const yScale = d3.scaleLinear()
 				.domain([0, d3.max(dataset.data, (d) => d[1])])
-				//.range([430, 0]);
 				.range([height - padding, padding]);
 
-
-
-
+				//create svg canvas
 				const svg = d3.select("#root")
 				.append("svg")
 				.attr("width", width)
 				.attr("height", height)
 				.attr("style", "background-color: lightgrey;");
 
+				//create Title
 				svg.append("text")
 				.attr("x", (width / 2) - 150)
 				.attr("y", 50)
@@ -92,43 +86,42 @@
 				.attr("font-size", "30px")
 				.attr("font-weight", "bold");
 
-
+				//position X Axis
 				var xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
 
-				//x axis
 				svg.append("g")
 				.attr("transform", "translate(0," + (height - padding) + ")")
 				.call(xAxis);
 
+				//position Y Axis
 				var yAxis = d3.axisLeft(yScale);
 
 				svg.append("g")
 				.attr("transform", "translate(50, 0)")
 				.call(yAxis);
 
+				/*
+				create bars of chart
+				x and y are coordinates of upper left hand corner of rect
+				width and height are size of rect
+				fill is rect color
+				stroke is line separating rects
+				*/
 				svg.selectAll("rect")
 				.data(dataset.data)
 				.enter()
 				.append("rect")
-				//.attr("x", (d, i) => { return (i * 3.23) + 53; })
-				//.attr("x", (d, i) => { return xScale((i * xWidthFactor) + parseInt(minYear)); })
 				.attr("x", (d, i) => {
 					//start 1946 years over aka 50 px over, 1946 becomes 50px after xScale
 					//because of xScale domain and range
 					var scaledValue = xScale((i * xWidthFactor) + parseInt(minYear));
 					return scaledValue;
 				})
-				//.attr("y", (d, i) => { return height - ((d[1] / 18000) * 430) - 60; })
 				.attr("y", (d, i) => {
-
-					//return height - ((d[1] / 18000) * 430) - 60; 
 					return yScale(d[1]); 
 				})
 				.attr("width", 3)
-				//.attr("height", (d, i) => { return (d[1] / 18000) * 430; })
 				.attr("height", (d, i) => {
-
-					//return (d[1] / 18000) * 430; 
 					return (height - padding - yScale(d[1]));
 				})
 				.attr("fill", "blue")
@@ -175,8 +168,6 @@
 				.attr("transform", "rotate(-90)")
 				.style("text-anchor", "middle")
 				.text("GDP");
-
-
 			});
 
 			/*
@@ -198,5 +189,3 @@
 		</script>
 	</body>
 </html> 
-
-
