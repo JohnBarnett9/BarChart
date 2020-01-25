@@ -187,5 +187,24 @@
 			}
 
 		</script>
+		<div
+		style="
+		width: 700px;
+		height: 400px;
+		overflow-y: scroll;">
+			<p>BarChart is a D3.js Version 5 application.<br>
+			This project is from <a href="https://www.freecodecamp.org/learn/data-visualization/data-visualization-projects/visualize-data-with-a-bar-chart">FreeCodeCamp Project 1</a><br>
+			I used ideas from <a href="https://codepen.io/salmankhalid187/pen/PamNMm">This CodePen</a><br>
+			<a href="https://github.com/JohnBarnett9/BarChart">Source Code</a></p>
+			<p>I commented every line of D3.js code, in the file BarChartUnderstandEveryLine.js.</p>
+			<p>The top few things I learned were</p>
+			<ol>
+			<li>the general pattern of creating DOM elements for the vizualization web page is<br>
+			<code>selectAll().data().enter().append();</code><br>
+			<code>append()</code> is the function call that actually renders content to the screen by appending to the DOM.</li>
+			<li><code>scaleLinear().domain().range()</code> creates a function that transforms data input into output that appears at the correct place on the web page</li>
+			<li>The tooltip that appears when the user hovers over a bar is the same <code>&lt;div&gt;</code>, it just appears in different places when you mouseover.</li>
+			</ol>
+		</div>
 	</body>
 </html> 
